@@ -524,7 +524,7 @@ function gameover(image, name, enemyName) {
   const div2El = document.createElement("div");
   div2El.setAttribute("class", "flex-row");
   const h2El = document.createElement("h2");
-  h2El.textContent = `${enemyName}👹was too powerful. ${name} has lost.😿💔`;
+  h2El.textContent = `${enemyName}👹was too powerful. ${name} has lost.😿`;
 
   const imgEl = document.createElement("img");
   imgEl.src = `${image}`;
