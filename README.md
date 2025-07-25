@@ -6,7 +6,7 @@ BattleTail is a simple, interactive browser game where players choose a pet and 
 
 ## 🧠 Demo
 
-<https://holaquiz.netlify.app/>
+<https://battletail.netlify.app/>
 
 ## 🚀 How to Play
 
