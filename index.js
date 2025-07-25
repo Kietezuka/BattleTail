@@ -11,7 +11,7 @@ class Pets {
 
   attack(enemy, isSpecial) {
     const damegeValueEnemy =
-      Math.floor(Math.random() * 16) + Number(`${isSpecial ? 10 : 1}`);
+      Math.floor(Math.random() * 11) + Number(`${isSpecial ? 10 : 5}`);
     enemy.hp = Math.max(0, enemy.hp - damegeValueEnemy);
     const reducePetEnergyValue = Math.floor(Math.random() * 4) + 1;
     this.energy = Math.max(0, this.energy - reducePetEnergyValue);
@@ -20,8 +20,8 @@ class Pets {
   }
 
   heal() {
-    const healPetHpValue = Math.floor(Math.random() * 5) + 6;
-    const healPetEnergyValue = Math.floor(Math.random() * 3) + 3;
+    const healPetHpValue = Math.floor(Math.random() * 5) + 8;
+    const healPetEnergyValue = Math.floor(Math.random() * 4) + 5;
     this.hp = Math.min(this.maxHp, this.hp + healPetHpValue);
     this.energy = Math.min(this.maxEnergy, this.energy + healPetEnergyValue);
     return { healPetHpValue, healPetEnergyValue };
@@ -33,7 +33,7 @@ class Enemy extends Pets {
     super(name, "enemy", image, hp, energy, maxHp, maxEnergy);
   }
   attack(pet) {
-    const damegeValuePet = Math.floor(Math.random() * 14) + 1;
+    const damegeValuePet = Math.floor(Math.random() * 19) + 8;
     pet.hp = Math.max(0, pet.hp - damegeValuePet);
 
     const reduceEnermyEnergyValue = Math.floor(Math.random() * 4) + 1;
@@ -102,8 +102,8 @@ const nameMap = {
 for (let i = 0; i < petTypes.length; i++) {
   const randomNum = Math.floor(Math.random() * 6) + 1;
   const image = `./image/pet-images/${petTypes[i]}${randomNum}.png`;
-  const hp = Math.floor(Math.random() * 20) + 50;
-  const energy = Math.floor(Math.random() * 10) + 35;
+  const hp = Math.floor(Math.random() * 21) + 60;
+  const energy = Math.floor(Math.random() * 16) + 40;
   const type = petTypes[i];
   const name = nameMap[type][randomNum - 1];
   pets.push(new Pets(name, type, image, hp, energy));
@@ -135,8 +135,8 @@ function renderSelectSection(name, type, image, hp, energy) {
 function getEnemy() {
   const randomNum = Math.floor(Math.random() * 6) + 1;
   const image = `./image/enemy-images/enemy${randomNum}.png`;
-  const hp = Math.floor(Math.random() * 20) + 50;
-  const energy = Math.floor(Math.random() * 10) + 35;
+  const hp = Math.floor(Math.random() * 21) + 80;
+  const energy = Math.floor(Math.random() * 16) + 35;
   const name = enemyNames[randomNum - 1];
 
   return new Enemy(name, image, hp, energy, hp, energy);
@@ -604,8 +604,8 @@ function resetVsSection() {
   for (let i = 0; i < petTypes.length; i++) {
     const randomNum = Math.floor(Math.random() * 6) + 1;
     const image = `./image/pet-images/${petTypes[i]}${randomNum}.png`;
-    const hp = Math.floor(Math.random() * 20) + 80;
-    const energy = Math.floor(Math.random() * 10) + 45;
+    const hp = Math.floor(Math.random() * 21) + 60;
+    const energy = Math.floor(Math.random() * 16) + 40;
     const type = petTypes[i];
     const name = nameMap[type][randomNum - 1];
     pets.push(new Pets(name, type, image, hp, energy));
