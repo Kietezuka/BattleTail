@@ -62,8 +62,8 @@ const petTypes = ["dog", "cat", "randomPet"];
 //store 3 different type of pets(randamly)
 
 const pets = [];
-const dogNames = ["Waffles", "Tofu", "Lulu", "Toto", "Milly", "Biscuit"];
-const catNames = ["Mochi", "Luna", "Whiskers", "Sora", "Pumpkin", "Muffin"];
+const dogNames = ["Ichi", "Tofu", "Lulu", "Toto", "Kota", "Choco"];
+const catNames = ["Mochi", "Luna", "Hana", "Sora", "Nana", "Mikan"];
 const randomPetNames = ["Pebble", "Taco", "Mocha", "Ziggy", "Nibbles", "Pixie"];
 const enemyNames = [
   "Varkon",
@@ -344,14 +344,19 @@ startBtn.addEventListener("click", () => {
     const petAttack = petValue.attack(enemyValue, false);
     petAttackUI(false, petAttack);
     const enemyAttack = enemyValue.attack(petValue);
-    enemeyAttackUI(enemyAttack);
+
+    setTimeout(() => {
+      enemeyAttackUI(enemyAttack);
+    }, 4000);
   });
 
   petVsEnemy.skillBtn.addEventListener("click", () => {
     const petAttack = petValue.attack(enemyValue, true);
     petAttackUI(true, petAttack);
     const enemyAttack = enemyValue.attack(petValue);
-    enemeyAttackUI(enemyAttack);
+    setTimeout(() => {
+      enemeyAttackUI(enemyAttack);
+    }, 2500);
   });
 
   function petAttackUI(isSpecial = false, attack) {
@@ -362,21 +367,25 @@ startBtn.addEventListener("click", () => {
       } ${petAttacks[attack.getPetAttackIndex]} the ${enemyValue.name}!`
     );
 
-    addLogMessage(
-      petVsEnemy.logDiv,
-      `> ${enemyValue.name} took ${attack.damegeValueEnemy} damage!`
-    );
-    addLogMessage(petVsEnemy.logDiv, "────────────");
+    setTimeout(() => {
+      addLogMessage(
+        petVsEnemy.logDiv,
+        `> ${enemyValue.name} took ${attack.damegeValueEnemy} damage!`
+      );
 
-    enemyHpEl.textContent = enemyValue.hp;
+      enemyHpEl.textContent = enemyValue.hp;
 
-    petEnergyEl.textContent = petValue.energy;
+      petEnergyEl.textContent = petValue.energy;
 
-    if (enemyValue.hp === 0) {
-      addLogMessage(petVsEnemy.logDiv, "> You Win!🔥");
-      win(petValue.image, petValue.name, enemyValue.name);
-      return;
-    }
+      addLogMessage(petVsEnemy.logDiv, "────────────");
+      if (enemyValue.hp === 0) {
+        setTimeout(() => {
+          addLogMessage(petVsEnemy.logDiv, "> You Win!🔥");
+          win(petValue.image, petValue.name, enemyValue.name);
+          return;
+        }, 2000);
+      }
+    }, 1000);
   }
 
   function enemeyAttackUI(attack) {
@@ -387,18 +396,22 @@ startBtn.addEventListener("click", () => {
       } the ${petValue.name}!`
     );
 
-    addLogMessage(
-      petVsEnemy.logDiv,
-      `> ${petValue.name} took ${attack.damegeValuePet} damage!`
-    );
-    addLogMessage(petVsEnemy.logDiv, "────────────");
-    petHpEl.textContent = petValue.hp;
-    enemyEnergyEl.textContent = enemyValue.energy;
-    if (petValue.hp === 0) {
-      addLogMessage(petVsEnemy.logDiv, "> Game Over! 💀");
-      gameover(petValue.image, petValue.name, enemyValue.name);
-      return;
-    }
+    setTimeout(() => {
+      addLogMessage(
+        petVsEnemy.logDiv,
+        `> ${petValue.name} took ${attack.damegeValuePet} damage!`
+      );
+      addLogMessage(petVsEnemy.logDiv, "────────────");
+      petHpEl.textContent = petValue.hp;
+      enemyEnergyEl.textContent = enemyValue.energy;
+      if (petValue.hp === 0) {
+        setTimeout(() => {
+          addLogMessage(petVsEnemy.logDiv, "> Game Over! 💀");
+          gameover(petValue.image, petValue.name, enemyValue.name);
+          return;
+        }, 3500);
+      }
+    }, 3000);
   }
 
   //Heal
@@ -531,6 +544,17 @@ function gameover(image, name, enemyName) {
 }
 
 function win(image, name, enemyName) {
+  /*
+  <div id="result-elements">
+    <h1>${enemyName}👹has been defeated. ${name} wins!🎉</h1>
+    <div class="flex-row">
+      <h2>Great job, ${name}!🐾✨</h2>
+      <img src="imgEl.src" alt="imgEl.alt" />
+    </div>
+    <button id="play-again-btn">Play Again</button>
+    </div>
+  */
+
   isVisible(vsSection, false);
   isVisible(resultSection, true);
   const divEl = document.createElement("div");
@@ -559,17 +583,6 @@ function win(image, name, enemyName) {
     isVisible(resultSection, false);
     resetVsSection();
   });
-
-  /*
-  <div id="result-elements">
-    <h1>Victory!</h1>
-    <div class="flex-row">
-      <h2>Your pet defected enemey</h2>
-      <img src="./image/pet-images/dog1.png" alt="" />
-    </div>
-    <button id="play-again-btn">Play Again</button>
-    </div>
-  */
 }
 
 function resetVsSection() {
