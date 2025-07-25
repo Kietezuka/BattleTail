@@ -13,7 +13,8 @@ class Pets {
     const damegeValueEnemy =
       Math.floor(Math.random() * 11) + Number(`${isSpecial ? 10 : 5}`);
     enemy.hp = Math.max(0, enemy.hp - damegeValueEnemy);
-    const reducePetEnergyValue = Math.floor(Math.random() * 4) + 1;
+    const reducePetEnergyValue =
+      Math.floor(Math.random() * 4) + Number(`${isSpecial ? 5 : 1}`);
     this.energy = Math.max(0, this.energy - reducePetEnergyValue);
     const getPetAttackIndex = Math.floor(Math.random() * petAttacks.length);
     return { damegeValueEnemy, getPetAttackIndex };

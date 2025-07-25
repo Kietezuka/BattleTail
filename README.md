@@ -28,10 +28,10 @@ BattleTail is a simple, interactive browser game where players choose a pet and 
 
 4. **Battle Options:**
 
-   - ⚔️ **Attack:** Inflicts 1–15 damage to the enemy and reduces pet energy by 1–4.
-   - 💖 **Heal:** Restores 6–10 HP and 3–5 energy to your pet (capped at max).
-   - ✨ **Special Skill:** Doubled attack damage (11–25) with additional energy cost.
-   - 🏃 **Run Away:** Ends the battle and shows a defeat screen with a retry option.
+   - ⚔️ **Attack:** Deal 5–15 damage to enemy, use 1–3 energy
+   - 💖 **Heal:** Deal 15–20 damage to enemy, use 1–4 energy
+   - ✨ **Special Skill:** Restore 8–12 HP and use 5–8 energy (cannot exceed max)
+   - 🏃 **Run Away:** End the current game and show a result screen with retry option
 
 5. **Battle Log:**
 
@@ -59,9 +59,9 @@ BattleTail is a simple, interactive browser game where players choose a pet and 
 
 | Action        | Effect                                               |
 | ------------- | ---------------------------------------------------- |
-| Attack        | Deals random damage (1–15) to enemy, uses 1–4 energy |
-| Special Skill | Deals higher damage (11–25), uses extra energy       |
-| Heal          | Regain HP (6–10) and energy (3–5), up to max         |
+| Attack        | Deals random damage (5–15) to enemy, uses 1–3 energy |
+| Special Skill | Deals higher damage (15–20), uses 5-8 energy         |
+| Heal          | Regain HP (8–12) and energy (5–8), up to max         |
 | Run Away      | Ends the game early, displays result screen          |
 
 ---
