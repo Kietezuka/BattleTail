@@ -1,25 +1,45 @@
 class Pets {
-  constructor(name, type, image, hp, energy) {
+  constructor(name, type, image, hp, energy, maxHp, maxEnergy) {
     this.name = name;
     this.type = type;
     this.image = image;
     this.hp = hp;
     this.energy = energy;
+    this.maxHp = maxHp;
+    this.maxEnergy = maxEnergy;
   }
 
-  attack(enemy) {
-    const damege = Math.floor(Math.random() * 10) + 5;
-    enemy.hp -= damege;
+  attack(enemy, isSpecial) {
+    const damegeValueEnemy =
+      Math.floor(Math.random() * 16) + Number(`${isSpecial ? 10 : 1}`);
+    enemy.hp = Math.max(0, enemy.hp - damegeValueEnemy);
+    const reducePetEnergyValue = Math.floor(Math.random() * 4) + 1;
+    this.energy = Math.max(0, this.energy - reducePetEnergyValue);
+    const getPetAttackIndex = Math.floor(Math.random() * petAttacks.length);
+    return { damegeValueEnemy, getPetAttackIndex };
+  }
+
+  heal() {
+    const healPetHpValue = Math.floor(Math.random() * 5) + 6;
+    const healPetEnergyValue = Math.floor(Math.random() * 3) + 3;
+    this.hp = Math.min(this.maxHp, this.hp + healPetHpValue);
+    this.energy = Math.min(this.maxEnergy, this.energy + healPetEnergyValue);
+    return { healPetHpValue, healPetEnergyValue };
   }
 }
 
 class Enemy extends Pets {
-  constructor(name, image, hp, energy) {
-    super(name, image, hp, energy);
+  constructor(name, image, hp, energy, maxHp, maxEnergy) {
+    super(name, "enemy", image, hp, energy, maxHp, maxEnergy);
   }
   attack(pet) {
-    const damege = Math.floor(Math.random() * 12) + 5;
-    pet.hp -= damege;
+    const damegeValuePet = Math.floor(Math.random() * 14) + 1;
+    pet.hp = Math.max(0, pet.hp - damegeValuePet);
+
+    const reduceEnermyEnergyValue = Math.floor(Math.random() * 4) + 1;
+    this.energy = Math.max(0, this.energy - reduceEnermyEnergyValue);
+    const getEnemyAttackIndex = Math.floor(Math.random() * enemyAttacks.length);
+    return { damegeValuePet, getEnemyAttackIndex };
   }
 }
 
@@ -40,6 +60,7 @@ const startBtn = document.getElementById("start-btn");
 
 const petTypes = ["dog", "cat", "randomPet"];
 //store 3 different type of pets(randamly)
+
 const pets = [];
 const dogNames = ["Waffles", "Tofu", "Lulu", "Toto", "Milly", "Biscuit"];
 const catNames = ["Mochi", "Luna", "Whiskers", "Sora", "Pumpkin", "Muffin"];
@@ -75,7 +96,6 @@ const nameMap = {
   dog: dogNames,
   cat: catNames,
   randomPet: randomPetNames,
-  enemy: enemyNames,
 };
 
 //Pet
@@ -117,8 +137,9 @@ function getEnemy() {
   const image = `./image/enemy-images/enemy${randomNum}.png`;
   const hp = Math.floor(Math.random() * 20) + 50;
   const energy = Math.floor(Math.random() * 10) + 35;
-  const name = randomPetNames[randomNum - 1];
-  return { image, name, hp, energy };
+  const name = enemyNames[randomNum - 1];
+
+  return new Enemy(name, image, hp, energy, hp, energy);
 }
 
 function renderPetVsEnemy(
@@ -126,11 +147,15 @@ function renderPetVsEnemy(
   petName,
   petType,
   petHp,
+  maxPetHp,
   petEnergy,
+  maxPetEnergy,
   enemyImageSrc,
   enemyName,
   enemyHp,
-  enemyEnergy
+  maxEnemyHp,
+  enemyEnergy,
+  maxEnemyEnergy
 ) {
   /*
         <div id="vs-screen">
@@ -172,15 +197,14 @@ function renderPetVsEnemy(
   petImage.src = `${petImageSrc}`;
   petImage.alt = `${petName}-image`;
   const petHpEnergyDiv = document.createElement("div");
-  petHpEnergyDiv.setAttribute("class", "hp-energy");
   const petNameP = document.createElement("P");
   const p1 = document.createElement("p");
   const p2 = document.createElement("p");
   const spanPetName = `🐶 ${petName}`;
   petNameP.innerHTML = spanPetName;
-  const spanContentP1 = `❤️ HP : <span id="${petType}-hp">${petHp}</span>/${petHp}`;
+  const spanContentP1 = `❤️ HP : <span id="${petType}-hp">${petHp}</span>/${maxPetHp}`;
   p1.innerHTML = spanContentP1;
-  const spanContentP2 = `🔋 Energy : <span id="${petType}-energy">${petEnergy}</span>/${petEnergy}`;
+  const spanContentP2 = `🔋 Energy : <span id="${petType}-energy">${petEnergy}</span>/${maxPetEnergy}`;
   p2.innerHTML = spanContentP2;
   petHpEnergyDiv.append(petNameP, p1, p2);
 
@@ -198,15 +222,14 @@ function renderPetVsEnemy(
   enemyImage.src = `${enemyImageSrc}`;
   enemyImage.alt = `${enemyName}-image`;
   const enemyHpEnergyDiv = document.createElement("div");
-  enemyHpEnergyDiv.setAttribute("class", "hp-energy");
   const enemyNameP = document.createElement("p");
   const p3 = document.createElement("p");
   const p4 = document.createElement("p");
   const spanEnemyName = `👹 ${enemyName}`;
   enemyNameP.innerHTML = spanEnemyName;
-  const spanContent3 = `❤️ HP : <span id="enemy-hp">${enemyHp}</span>/${enemyHp}`;
+  const spanContent3 = `❤️ HP : <span id="enemy-hp">${enemyHp}</span>/${maxEnemyHp}`;
   p3.innerHTML = spanContent3;
-  const spanContentP4 = `🔋 Energy : <span id="enemy-energy">${enemyEnergy}</span>/${enemyEnergy}`;
+  const spanContentP4 = `🔋 Energy : <span id="enemy-energy">${enemyEnergy}</span>/${maxEnemyEnergy}`;
   p4.innerHTML = spanContentP4;
   enemyHpEnergyDiv.append(enemyNameP, p3, p4);
 
@@ -257,11 +280,15 @@ function renderPetVsEnemy(
   return { attackBtn, healBtn, skillBtn, runBtn, logDiv, petVsEnemyDiv };
 }
 
+function isVisible(element, visible = true) {
+  element.style.display = visible ? "block" : "none";
+}
+
 petSelectBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
     petSelectBtns.forEach((b) => b.classList.remove("selected"));
     btn.classList.add("selected");
-    startBtn.style.display = "block";
+    isVisible(startBtn, true);
   });
 });
 
@@ -281,27 +308,30 @@ function getPet() {
       hp = pet.hp;
       energy = pet.energy;
 
-      selectPetSection.style.display = "none";
-      vsSection.style.display = "block";
+      isVisible(selectPetSection, false);
+      isVisible(vsSection, true);
     }
   });
-  return { type, image, name, hp, energy };
+  return new Pets(name, type, image, hp, energy, hp, energy);
 }
 
 startBtn.addEventListener("click", () => {
   const enemyValue = getEnemy();
   const petValue = getPet();
-
   const petVsEnemy = renderPetVsEnemy(
     petValue.image,
     petValue.name,
     petValue.type,
     petValue.hp,
+    petValue.maxHp,
     petValue.energy,
+    petValue.maxEnergy,
     enemyValue.image,
     enemyValue.name,
     enemyValue.hp,
-    enemyValue.energy
+    enemyValue.maxHp,
+    enemyValue.energy,
+    enemyValue.maxEnergy
   );
 
   const petHpEl = document.getElementById(`${petValue.type}-hp`);
@@ -311,92 +341,109 @@ startBtn.addEventListener("click", () => {
 
   //Attack
   petVsEnemy.attackBtn.addEventListener("click", () => {
-    attack("attackButton");
+    const petAttack = petValue.attack(enemyValue, false);
+    petAttackUI(false, petAttack);
+    const enemyAttack = enemyValue.attack(petValue);
+    enemeyAttackUI(enemyAttack);
   });
 
   petVsEnemy.skillBtn.addEventListener("click", () => {
-    attack("skillButton");
+    const petAttack = petValue.attack(enemyValue, true);
+    petAttackUI(true, petAttack);
+    const enemyAttack = enemyValue.attack(petValue);
+    enemeyAttackUI(enemyAttack);
   });
 
-  function attack(button) {
-    const getPetAttackIndex = Math.floor(Math.random() * petAttacks.length);
-    const getEnemyAttackIndex = Math.floor(Math.random() * enemyAttacks.length);
-    const damegeValueEnemy =
-      Math.floor(Math.random() * 16) +
-      Number(`${button === "skillButton" ? 10 : 1}`);
-    const damegeValuePet = Math.floor(Math.random() * 14) + 1;
-    const reducePetEnergyValue = Math.floor(Math.random() * 4) + 1;
-    const reduceEnermyEnergyValue =
-      Math.floor(Math.random() * 4) +
-      Number(`${button === "skillButton" ? 5 : 1}`);
-
+  function petAttackUI(isSpecial = false, attack) {
     addLogMessage(
       petVsEnemy.logDiv,
       `> The ${petValue.name} the ${
-        button === "skillButton" ? " ✨ special move and " : "⚔️"
-      } ${petAttacks[getPetAttackIndex]} the ${enemyValue.name}!`
+        isSpecial ? " ✨ special move and " : "⚔️"
+      } ${petAttacks[attack.getPetAttackIndex]} the ${enemyValue.name}!`
     );
 
-    setTimeout(() => {
-      addLogMessage(
-        petVsEnemy.logDiv,
-        `> ${enemyValue.name} took ${damegeValueEnemy} damage!`
-      );
-      addLogMessage(petVsEnemy.logDiv, "────────────");
+    addLogMessage(
+      petVsEnemy.logDiv,
+      `> ${enemyValue.name} took ${attack.damegeValueEnemy} damage!`
+    );
+    addLogMessage(petVsEnemy.logDiv, "────────────");
 
-      enemyValue.hp = Math.max(0, enemyValue.hp - damegeValueEnemy);
-      enemyHpEl.textContent = enemyValue.hp;
+    enemyHpEl.textContent = enemyValue.hp;
 
-      petValue.energy = Math.max(0, petValue.energy - reducePetEnergyValue);
-      petEnergyEl.textContent = petValue.energy;
+    petEnergyEl.textContent = petValue.energy;
 
-      if (enemyValue.hp === 0) {
-        addLogMessage(petVsEnemy.logDiv, "> You Win!🔥");
-        setTimeout(() => {
-          win(petValue.image, petValue.name, enemyValue.name);
-        }, 2500);
-        return;
-      }
-      setTimeout(() => {
-        addLogMessage(
-          petVsEnemy.logDiv,
-          `>👹 The ${enemyValue.name} the ${enemyAttacks[getEnemyAttackIndex]} the ${petValue.name}!`
-        );
-        setTimeout(() => {
-          addLogMessage(
-            petVsEnemy.logDiv,
-            `> ${petValue.name} took ${damegeValuePet} damage!`
-          );
-          addLogMessage(petVsEnemy.logDiv, "────────────");
-          petValue.hp = Math.max(0, petValue.hp - damegeValuePet);
-          petHpEl.textContent = petValue.hp;
-          enemyValue.energy -= reduceEnermyEnergyValue;
-          enemyEnergyEl.textContent = enemyValue.energy;
-          if (petValue.hp === 0) {
-            addLogMessage(petVsEnemy.logDiv, "> Game Over! 💀");
-            setTimeout(() => {
-              gameover(petValue.image, petValue.name, enemyValue.name);
-            }, 2500);
-            return;
-          }
-        }, 3000);
-      }, 2000);
-    }, 1000);
+    if (enemyValue.hp === 0) {
+      addLogMessage(petVsEnemy.logDiv, "> You Win!🔥");
+      win(petValue.image, petValue.name, enemyValue.name);
+      return;
+    }
+  }
+
+  function enemeyAttackUI(attack) {
+    addLogMessage(
+      petVsEnemy.logDiv,
+      `>👹 The ${enemyValue.name} the ${
+        enemyAttacks[attack.getEnemyAttackIndex]
+      } the ${petValue.name}!`
+    );
+
+    addLogMessage(
+      petVsEnemy.logDiv,
+      `> ${petValue.name} took ${attack.damegeValuePet} damage!`
+    );
+    addLogMessage(petVsEnemy.logDiv, "────────────");
+    petHpEl.textContent = petValue.hp;
+    enemyEnergyEl.textContent = enemyValue.energy;
+    if (petValue.hp === 0) {
+      addLogMessage(petVsEnemy.logDiv, "> Game Over! 💀");
+      gameover(petValue.image, petValue.name, enemyValue.name);
+      return;
+    }
   }
 
   //Heal
   petVsEnemy.healBtn.addEventListener("click", function () {
-    const healPetHpValue = Math.floor(Math.random() * 5) + 6;
-    const healPetEnergyValue = Math.floor(Math.random() * 3) + 3;
-    petValue.hp += healPetHpValue;
-    petValue.energy += healPetEnergyValue;
-    petHpEl.textContent = petValue.hp;
-    petEnergyEl.textContent = petValue.energy;
-    addLogMessage(
-      petVsEnemy.logDiv,
-      `> ${petValue.name} healed ❤️${healPetHpValue} and 🔋${healPetEnergyValue} Energ!`
-    );
-    addLogMessage(petVsEnemy.logDiv, "────────────");
+    if (
+      !(
+        petValue.hp === petValue.maxHp && petValue.energy === petValue.maxEnergy
+      )
+    ) {
+      if (
+        petValue.hp === petValue.maxHp &&
+        petValue.energy < petValue.maxEnergy
+      ) {
+        const healValues = petValue.heal();
+        petEnergyEl.textContent = petValue.energy;
+
+        addLogMessage(
+          petVsEnemy.logDiv,
+          `> You have max HP❤️ and 🔋${healValues.healPetEnergyValue} Energ!`
+        );
+        addLogMessage(petVsEnemy.logDiv, "────────────");
+      } else if (
+        petValue.energy === petValue.maxEnergy &&
+        petValue.hp < petValue.maxHp
+      ) {
+        const healValues = petValue.heal();
+        petHpEl.textContent = petValue.hp;
+        addLogMessage(
+          petVsEnemy.logDiv,
+          `> You have max Energy🔋 and ❤️${healValues.healPetHpValue} Energ!`
+        );
+      } else {
+        const healValues = petValue.heal();
+        petHpEl.textContent = petValue.hp;
+        petEnergyEl.textContent = petValue.energy;
+        addLogMessage(
+          petVsEnemy.logDiv,
+          `> ${petValue.name} healed ❤️${healValues.healPetHpValue} and 🔋${healValues.healPetEnergyValue} Energ!`
+        );
+        addLogMessage(petVsEnemy.logDiv, "────────────");
+      }
+    } else {
+      addLogMessage(petVsEnemy.logDiv, `> You have max HP❤️ and max 🔋Energy!`);
+      addLogMessage(petVsEnemy.logDiv, "────────────");
+    }
   });
 
   petVsEnemy.runBtn.addEventListener("click", function () {
@@ -407,8 +454,8 @@ startBtn.addEventListener("click", () => {
     addLogMessage(petVsEnemy.logDiv, "────────────");
 
     setTimeout(() => {
-      vsSection.style.display = "none";
-      resultSection.style.display = "block";
+      isVisible(vsSection, false);
+      isVisible(resultSection, true);
 
       const divEl = document.createElement("div");
       divEl.setAttribute("id", "result-elements");
@@ -432,8 +479,8 @@ startBtn.addEventListener("click", () => {
       resultSection.append(divEl);
       const playAgainBtn = document.getElementById("play-again-btn");
       playAgainBtn.addEventListener("click", function () {
-        resultSection.style.display = "none";
-        selectPetSection.style.display = "block";
+        isVisible(resultSection, false);
+        isVisible(selectPetSection, true);
         resetVsSection();
       });
     }, 2500);
@@ -454,8 +501,8 @@ function addLogMessage(logDiv, message) {
 }
 
 function gameover(image, name, enemyName) {
-  vsSection.style.display = "none";
-  resultSection.style.display = "block";
+  isVisible(vsSection, false);
+  isVisible(resultSection, true);
   const divEl = document.createElement("div");
   divEl.setAttribute("id", "result-elements");
 
@@ -464,7 +511,7 @@ function gameover(image, name, enemyName) {
   const div2El = document.createElement("div");
   div2El.setAttribute("class", "flex-row");
   const h2El = document.createElement("h2");
-  h2El.textContent = `${enemyName}👹  was too powerful. ${name} has lost.😿💔`;
+  h2El.textContent = `${enemyName}👹was too powerful. ${name} has lost.😿💔`;
 
   const imgEl = document.createElement("img");
   imgEl.src = `${image}`;
@@ -478,20 +525,19 @@ function gameover(image, name, enemyName) {
   resultSection.append(divEl);
   const playAgainBtn = document.getElementById("play-again-btn");
   playAgainBtn.addEventListener("click", function () {
-    resultSection.style.display = "none";
+    isVisible(resultSection, false);
     resetVsSection();
   });
 }
 
 function win(image, name, enemyName) {
-  vsSection.style.display = "none";
-  resultSection.style.display = "block";
-
+  isVisible(vsSection, false);
+  isVisible(resultSection, true);
   const divEl = document.createElement("div");
   divEl.setAttribute("id", "result-elements");
 
   const h1El = document.createElement("h1");
-  h1El.textContent = `${enemyName}👹 has been defeated. ${name} wins! 🎉 `;
+  h1El.textContent = `${enemyName}👹has been defeated. ${name} wins!🎉`;
   const div2El = document.createElement("div");
   div2El.setAttribute("class", "flex-row");
   const h2El = document.createElement("h2");
@@ -510,7 +556,7 @@ function win(image, name, enemyName) {
 
   const playAgainBtn = document.getElementById("play-again-btn");
   playAgainBtn.addEventListener("click", function () {
-    resultSection.style.display = "none";
+    isVisible(resultSection, false);
     resetVsSection();
   });
 
@@ -527,6 +573,7 @@ function win(image, name, enemyName) {
 }
 
 function resetVsSection() {
+  count = 0;
   vsSection.innerHTML = "";
   resultSection.innerHTML = "";
   dogDiv.innerHTML = "";
@@ -537,19 +584,19 @@ function resetVsSection() {
   randomPetBtn.innerHTML = "";
 
   petSelectBtns.forEach((btn) => btn.classList.remove(".selected"));
-  selectPetSection.style.display = "block";
+  isVisible(selectPetSection, true);
 
   pets.length = 0;
+
   for (let i = 0; i < petTypes.length; i++) {
     const randomNum = Math.floor(Math.random() * 6) + 1;
     const image = `./image/pet-images/${petTypes[i]}${randomNum}.png`;
     const hp = Math.floor(Math.random() * 20) + 80;
-    // const hp = Math.floor(Math.random() * 20);
     const energy = Math.floor(Math.random() * 10) + 45;
     const type = petTypes[i];
     const name = nameMap[type][randomNum - 1];
     pets.push(new Pets(name, type, image, hp, energy));
     renderSelectSection(name, type, image, hp, energy);
   }
-  startBtn.style.display = "none";
+  isVisible(startBtn, false);
 }
