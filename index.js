@@ -348,7 +348,7 @@ startBtn.addEventListener("click", () => {
 
     setTimeout(() => {
       enemeyAttackUI(enemyAttack);
-    }, 4000);
+    }, 3500);
   });
 
   petVsEnemy.skillBtn.addEventListener("click", () => {
@@ -357,7 +357,7 @@ startBtn.addEventListener("click", () => {
     const enemyAttack = enemyValue.attack(petValue);
     setTimeout(() => {
       enemeyAttackUI(enemyAttack);
-    }, 2500);
+    }, 3500);
   });
 
   function petAttackUI(isSpecial = false, attack) {
@@ -382,9 +382,11 @@ startBtn.addEventListener("click", () => {
       if (enemyValue.hp === 0) {
         setTimeout(() => {
           addLogMessage(petVsEnemy.logDiv, "> You Win!🔥");
-          win(petValue.image, petValue.name, enemyValue.name);
-          return;
-        }, 2000);
+          setTimeout(() => {
+            win(petValue.image, petValue.name, enemyValue.name);
+            return;
+          }, 2500);
+        }, 3000);
       }
     }, 1000);
   }
@@ -408,11 +410,13 @@ startBtn.addEventListener("click", () => {
       if (petValue.hp === 0) {
         setTimeout(() => {
           addLogMessage(petVsEnemy.logDiv, "> Game Over! 💀");
-          gameover(petValue.image, petValue.name, enemyValue.name);
-          return;
-        }, 3500);
+          setTimeout(() => {
+            gameover(petValue.image, petValue.name, enemyValue.name);
+            return;
+          }, 5000);
+        }, 4500);
       }
-    }, 3000);
+    }, 3500);
   }
 
   //Heal
