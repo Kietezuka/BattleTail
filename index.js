@@ -261,6 +261,7 @@ function renderPetVsEnemy(
 
   const healBtn = document.createElement("button");
   healBtn.setAttribute("id", "heal-btn");
+  healBtn.disabled = true;
   healBtn.innerHTML = "💖 Heal";
 
   const skillBtn = document.createElement("button");
@@ -349,6 +350,7 @@ startBtn.addEventListener("click", () => {
     setTimeout(() => {
       enemeyAttackUI(enemyAttack);
     }, 3500);
+    changeHealBtnVisible();
   });
 
   petVsEnemy.skillBtn.addEventListener("click", () => {
@@ -358,6 +360,7 @@ startBtn.addEventListener("click", () => {
     setTimeout(() => {
       enemeyAttackUI(enemyAttack);
     }, 3500);
+    changeHealBtnVisible();
   });
 
   function petAttackUI(isSpecial = false, attack) {
@@ -419,6 +422,19 @@ startBtn.addEventListener("click", () => {
     }, 3500);
   }
 
+  //change HealBtn
+  function changeHealBtnVisible() {
+    if (
+      !(
+        petValue.hp === petValue.maxHp && petValue.energy === petValue.maxEnergy
+      )
+    ) {
+      petVsEnemy.healBtn.disabled = false;
+    } else {
+      petVsEnemy.healBtn.disabled = true;
+    }
+  }
+
   //Heal
   petVsEnemy.healBtn.addEventListener("click", function () {
     if (
@@ -454,14 +470,12 @@ startBtn.addEventListener("click", () => {
         petEnergyEl.textContent = petValue.energy;
         addLogMessage(
           petVsEnemy.logDiv,
-          `> ${petValue.name} healed ❤️${healValues.healPetHpValue} and 🔋${healValues.healPetEnergyValue} Energ!`
+          `> ${petValue.name} healed ❤️${healValues.healPetHpValue} and 🔋${healValues.healPetEnergyValue} Energy!`
         );
         addLogMessage(petVsEnemy.logDiv, "────────────");
       }
-    } else {
-      addLogMessage(petVsEnemy.logDiv, `> You have max HP❤️ and max 🔋Energy!`);
-      addLogMessage(petVsEnemy.logDiv, "────────────");
     }
+    changeHealBtnVisible();
   });
 
   petVsEnemy.runBtn.addEventListener("click", function () {
