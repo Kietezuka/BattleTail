@@ -1,0 +1,111 @@
+export const petData = [
+  {
+    type: "dog",
+    name: "Ichi",
+    attacks: ["slaps", "pounces on", "spins into"],
+    image: "dog1.png",
+  },
+  {
+    type: "dog",
+    name: "Tofu",
+    attacks: ["slaps", "scratches", "bites"],
+    image: "dog2.png",
+  },
+  {
+    type: "dog",
+    name: "Lulu",
+    attacks: ["pounces on", "bites", "headbutts", "spins into"],
+    image: "dog3.png",
+  },
+  {
+    type: "dog",
+    name: "Toto",
+    attacks: ["slaps", "pounces on", "spins into"],
+    image: "dog4.png",
+  },
+  {
+    type: "dog",
+    name: "Kota",
+    attacks: ["slaps", "headbutts", "spins into"],
+    image: "dog5.png",
+  },
+  {
+    type: "dog",
+    name: "Choco",
+    attacks: ["pounces on", "bites", "headbutts", "spins into"],
+    image: "dog6.png",
+  },
+  {
+    type: "cat",
+    name: "Mochi",
+    attacks: ["slaps", "scratches", "pounces on"],
+    image: "cat1.png",
+  },
+  {
+    type: "cat",
+    name: "Luna",
+    attacks: ["slaps", "headbutts", "spins into"],
+    image: "cat2.png",
+  },
+  {
+    type: "cat",
+    name: "Hana",
+    attacks: ["slaps", "bites", "headbutts", "spins into"],
+    image: "cat3.png",
+  },
+  {
+    type: "cat",
+    name: "Sora",
+    attacks: ["slaps", "scratches", "pounces on", "bites"],
+    image: "cat4.png",
+  },
+  {
+    type: "cat",
+    name: "Nana",
+    attacks: ["slaps", "bites", "headbutts", "spins into"],
+    image: "cat5.png",
+  },
+  {
+    type: "cat",
+    name: "Mikan",
+    attacks: ["slaps", "scratches", "pounces on", "bites"],
+    image: "cat6.png",
+  },
+
+  {
+    type: "random",
+    name: "Pebble",
+    attacks: ["spins into"],
+    image: "randomPet1.png",
+  },
+  {
+    type: "random",
+    name: "Taco",
+    attacks: ["slaps"],
+    image: "randomPet2.png",
+  },
+  {
+    type: "random",
+    name: "Mocha",
+    attacks: ["headbutts", "spins into"],
+    image: "randomPet3.png",
+  },
+  {
+    type: "random",
+    name: "Ziggy",
+    attacks: ["slaps", "bites", "headbutts", "spins into"],
+    image: "randomPet4.png",
+  },
+  {
+    type: "random",
+    name: "Nibbles",
+    attacks: ["slaps", "scratches", "headbutts", "spins into"],
+    image: "randomPet5.png",
+  },
+  {
+    type: "random",
+    name: "Pixie",
+    attacks: ["slaps", "scratches", "pounces on", "bites"],
+    image: "randomPet6.png",
+  },
+];
